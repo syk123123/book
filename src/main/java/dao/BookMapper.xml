@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-ccc"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.BookMapper">
+    <select id="login" resultType="int">
+         SELECT COUNT(1) FROM `user` WHERE username=#{0} AND PASSWORD=#{1}
+    </select>
+
+    <select id="pageList" resultType="Book">
+        SELECT * FROM `bookinfo` WHERE 1=1
+        <if test="type!=null and type!=0">
+            and booktype=#{type}
+        </if>
+        <if test="bookName!=null">
+            and bookName like concat("%",#{bookName},"%")
+        </if>
+        <if test="isborrowed!=null and isborrowed!=-1">
+            and borrowed=#{isborrowed}
+        </if>
+        order by creationTime DESC
+        limit #{from},#{pageSize}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT count(1) FROM `bookinfo` WHERE 1=1
+        <if test="type!=null and type!=0">
+            and booktype=#{type}
+        </if>
+        <if test="bookName!=null">
+            and bookName like concat("%",#{bookName},"%")
+        </if>
+        <if test="isborrowed!=null and isborrowed!=-1">
+            and borrowed=#{isborrowed}
+        </if>
+    </select>
+</mapper>
